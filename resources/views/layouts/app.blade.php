@@ -34,7 +34,7 @@
                 @include('layouts.header')
 
                 <!-- Contenido Principal -->
-                <main class="flex-1 p-6 lg:p-8 max-w-7xl w-full mx-auto">
+                <main class="flex-1 p-3 lg:p-3 max-w-7xl w-full mx-auto">
                     {{ $slot }}
                 </main>
             </div>
