@@ -13,9 +13,20 @@ class CategoriaController extends Controller
         $categories = Categoria::orderBy('nombre')->get();
         return view('categorias.index', compact('categorias'));
     }
-    public function buscar(Request $request)
+
+    public function store(Request $request)
     {
-        $texto = $request->query('texto', '');
-        return Categoria::where('nombre', 'like', "%{$texto}%")->get();
+        $datos = $request->validate([
+            'nombre' => ['required', 'string', 'max:100', 'unique:categorias,nombre'],
+        ]);
+
+        $categoria = Categoria::create($datos);
+
+        if ($request->wantsJson()) {
+            return response()->json($categoria, 201);
+        }
+
+        return redirect()->route('admin.categorias.index')
+            ->with('success', 'Categoría creada correctamente.');
     }
 }

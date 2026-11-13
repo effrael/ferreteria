@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\MarcaController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UnidadMedidaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -30,6 +33,9 @@ Route::middleware(['auth', 'role:administrador,vendedor'])
     ->name('admin.')
     ->group(function () {
         Route::resource('inventario', ProductoController::class);
+        Route::resource('categorias', CategoriaController::class);
+        Route::resource('marcas', MarcaController::class);
+        Route::resource('unidades', UnidadMedidaController::class);
     });
 
 require __DIR__ . '/auth.php';
