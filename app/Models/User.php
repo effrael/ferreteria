@@ -23,26 +23,6 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
-    /**
-     * Ruta a la que entra el usuario después de iniciar sesión, según su rol.
-     * Los roles sin acceso al panel van a la página pública.
-     */
-    /**
-     * ¿Este usuario puede entrar al panel de administración?
-     */
-    public function tieneAccesoAlPanel(): bool
-    {
-        return in_array($this->role, ['administrador', 'vendedor'], true);
-    }
-
-    public function rutaInicio(): string
-    {
-        return match ($this->role) {
-            'administrador', 'vendedor' => route('admin.ventas.index', absolute: false),
-            default => route('home', absolute: false),
-        };
-    }
-
     protected function casts(): array
     {
         return [

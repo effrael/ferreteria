@@ -14,9 +14,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'numero',
     'user_id',
     'cliente_id',
+    'cotizacion_id',
+    'metodo_pago',
     'subtotal',
+    'descuento',
+    'envio',
     'igv',
     'total',
+    'monto_recibido',
+    'vuelto',
     'estado',
 ])]
 class Ventas extends Model
@@ -25,8 +31,12 @@ class Ventas extends Model
     {
         return [
             'subtotal' => 'decimal:2',
+            'descuento' => 'decimal:2',
+            'envio' => 'decimal:2',
             'igv' => 'decimal:2',
             'total' => 'decimal:2',
+            'monto_recibido' => 'decimal:2',
+            'vuelto' => 'decimal:2',
             'estado' => 'boolean', // true = válida, false = anulada
         ];
     }
@@ -44,5 +54,10 @@ class Ventas extends Model
     public function cliente(): BelongsTo
     {
         return $this->belongsTo(User::class, 'cliente_id');
+    }
+
+    public function cotizacion(): BelongsTo
+    {
+        return $this->belongsTo(Cotizacion::class, 'cotizacion_id');
     }
 }

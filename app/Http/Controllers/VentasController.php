@@ -13,19 +13,7 @@ use Illuminate\View\View;
 
 class VentasController extends Controller
 {
-    /**
-     * Listado de comprobantes de venta.
-     * Por ahora la vista trae datos simulados; aún no lee de la base de datos.
-     */
     public function index(): View
-    {
-        return view('admin.ventas.index');
-    }
-
-    /**
-     * Punto de venta: la pantalla donde se cobra.
-     */
-    public function vender(): View
     {
         $productos = Producto::with('unidadmedida')
             ->where('estado', true)
@@ -34,7 +22,7 @@ class VentasController extends Controller
 
         $categorias = Categoria::orderBy('nombre')->get();
 
-        return view('vender', compact('productos', 'categorias'));
+        return view('ventas', compact('productos', 'categorias'));
     }
 
     public function store(Request $request): JsonResponse
