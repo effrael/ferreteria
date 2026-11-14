@@ -7,6 +7,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UnidadMedidaController;
 use App\Http\Controllers\VentasController;
+use App\Http\Controllers\MetodosPagoController;
 use Illuminate\Support\Facades\Route;
 
 // ===== Sitio público: Home y páginas informativas =====
@@ -49,6 +50,7 @@ Route::middleware(['auth', 'role:administrador,vendedor'])
         Route::resource('categorias', CategoriaController::class);
         Route::resource('marcas', MarcaController::class);
         Route::resource('unidades', UnidadMedidaController::class);
+        Route::resource('metodos-pago', MetodosPagoController::class)->parameters(['metodos-pago' => 'metodosPago']);
     });
 
 require __DIR__ . '/auth.php';
