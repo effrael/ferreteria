@@ -9,7 +9,13 @@ use App\Http\Controllers\UnidadMedidaController;
 use App\Http\Controllers\VentasController;
 use App\Http\Controllers\MetodosPagoController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    // ... rutas existentes de ventas, vender, inventario, etc.
+    Route::resource('usuarios', UserController::class)
+        ->parameters(['usuarios' => 'user']);
+});
 // ===== Sitio público: Home y páginas informativas =====
 // Sin middleware 'guest': deben verse con o sin sesión iniciada.
 Route::controller(PaginaController::class)->group(function () {
@@ -46,6 +52,7 @@ Route::middleware(['auth', 'role:administrador,vendedor'])
         // Comprobantes: listado y registro de la venta.
         // Rutas explícitas en vez de resource, para no exponer métodos que no existen.
         Route::get('ventas', [VentasController::class, 'index'])->name('ventas.index');
+       Route::resource('usuarios', UserController::class)->parameters(['usuarios' => 'user']);
         Route::post('ventas', [VentasController::class, 'store'])->name('ventas.store');
         Route::resource('categorias', CategoriaController::class);
         Route::resource('marcas', MarcaController::class);

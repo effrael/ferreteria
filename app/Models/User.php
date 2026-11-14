@@ -11,7 +11,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'email', 'password', 'role'])]
+#[Fillable(['name', 'email', 'password', 'role', 'estado'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -19,22 +19,18 @@ class User extends Authenticatable
     use HasFactory, Notifiable, HasRoles;
 
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    /**
-     * Ruta a la que entra el usuario después de iniciar sesión, según su rol.
-     * Los roles sin acceso al panel van a la página pública.
-     */
-    /**
      * ¿Este usuario puede entrar al panel de administración?
      */
     public function tieneAccesoAlPanel(): bool
     {
-        return in_array($this->role, ['administrador', 'vendedor'], true);
+        return in_array($this->role, ['administrador', 'vendedor'], true)
+            && ($this->estado ?? true);
     }
 
+    /**
+     * Ruta a la que entra el usuario después de iniciar sesión, según su rol.
+     * Los roles sin acceso al panel van a la página pública.
+     */
     public function rutaInicio(): string
     {
         return match ($this->role) {
@@ -43,13 +39,20 @@ class User extends Authenticatable
         };
     }
 
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'estado' => 'boolean',
         ];
     }
+
     public function tieneRol(string ...$roles): bool
     {
         return in_array($this->role, $roles);
